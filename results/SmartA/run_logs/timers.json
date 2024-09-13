@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1725192930",
+        "python_version": "3.9.13 (main, Oct 13 2022, 21:23:06) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "H:\\PhD---3D-Sensors-MLAgents-v3\\venv\\Scripts\\mlagents-learn Assets\\trainer_config.yaml --run-id=SmartA --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.4.0+cpu",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1725192956"
+    },
+    "total": 26.2221438,
+    "count": 1,
+    "self": 0.01055170000000416,
+    "children": {
+        "run_training.setup": {
+            "total": 0.19590310000000022,
+            "count": 1,
+            "self": 0.19590310000000022
+        },
+        "TrainerController.start_learning": {
+            "total": 26.015689,
+            "count": 1,
+            "self": 0.0003934000000000992,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 26.015278799999997,
+                    "count": 1,
+                    "self": 26.015278799999997
+                },
+                "trainer_threads": {
+                    "total": 1.6000000009341875e-06,
+                    "count": 1,
+                    "self": 1.6000000009341875e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 1.5199999999992997e-05,
+                    "count": 1,
+                    "self": 1.5199999999992997e-05
+                }
+            }
+        }
+    }
+}
