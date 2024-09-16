@@ -1720,8 +1720,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &67585498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1764,8 +1762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &67585500
 Rigidbody:
@@ -2537,8 +2536,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &79670875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2581,8 +2578,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &79670877
 Rigidbody:
@@ -3271,8 +3269,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &111978342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3315,8 +3311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &111978344
 Rigidbody:
@@ -4320,8 +4317,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &308547976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4364,8 +4359,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &308547978
 Rigidbody:
@@ -5480,8 +5476,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &478468588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5524,8 +5518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &478468590
 Rigidbody:
@@ -6193,8 +6188,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &566562378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6237,8 +6230,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &566562380
 Rigidbody:
@@ -6793,8 +6787,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &595956982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6837,8 +6829,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &595956984
 Rigidbody:
@@ -7049,8 +7042,9 @@ GameObject:
   m_Component:
   - component: {fileID: 627978520}
   - component: {fileID: 627978519}
+  - component: {fileID: 627978521}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TargetManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7063,7 +7057,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627978518}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c17c6af9f03c194fb20c9c3ffecc3ef, type: 3}
   m_Name: 
@@ -7088,6 +7082,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &627978521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627978518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae39894ea898944a8059074108c65d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetPrefab: {fileID: 4995380069095900162, guid: 092d3a63bccacbe42b0e5de4f7c26138,
+    type: 3}
+  numberOfTargets: 200
+  spawnRange: 200
+  minHeight: -60
+  maxHeight: 120
+  minDistanceBetweenTargets: 15
+  environmentCenter: {fileID: 1330364910}
 --- !u!1 &636462220
 GameObject:
   m_ObjectHideFlags: 0
@@ -8091,8 +8105,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &794364693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8135,8 +8147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &794364695
 Rigidbody:
@@ -8938,8 +8951,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &839259317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8982,8 +8993,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &839259319
 Rigidbody:
@@ -9521,8 +9533,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &843626380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9565,8 +9575,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &843626382
 Rigidbody:
@@ -10121,8 +10132,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &946578655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10165,8 +10174,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &946578657
 Rigidbody:
@@ -10838,8 +10848,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &988014902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10882,8 +10890,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &988014904
 Rigidbody:
@@ -11555,8 +11564,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &1005714998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11599,8 +11606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &1005715000
 Rigidbody:
@@ -12389,8 +12397,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &1061528894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12433,8 +12439,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &1061528896
 Rigidbody:
@@ -13106,8 +13113,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &1124676193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13150,8 +13155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &1124676195
 Rigidbody:
@@ -14085,8 +14091,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &1341913752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14129,8 +14133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &1341913754
 Rigidbody:
@@ -15152,8 +15157,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &1716103148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15196,8 +15199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &1716103150
 Rigidbody:
@@ -16321,8 +16325,6 @@ MonoBehaviour:
   targetFollowDistance: 100
   maxAllowedDistance: 65
   environmentCenter: {fileID: 1330364910}
-  maxNearbyAgents: 3
-  detectionRadius: 20
 --- !u!114 &2054640877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16365,8 +16367,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f947659262d33ba4ab17030efaf62db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxThrust: 750
   currentThrust: 0
+  thrustAdjustmentSpeed: 1
+  maxThrust: 750
   rotationSpeed: 50
 --- !u!54 &2054640879
 Rigidbody:

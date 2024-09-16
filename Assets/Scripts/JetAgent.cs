@@ -1,85 +1,172 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using MBaske.Sensors.Grid;
 using System.Collections.Generic;
 
+/// <summary>
+/// Represents a Jet Agent that uses ML-Agents for training and interacts with targets managed by TargetManager.
+/// Capable of moving in all three axes (X, Y, Z) using a Grid Sensor.
+/// </summary>
 public class JetAgent : Agent
 {
+    // Reference to the JetController component
     public JetController jetController;
+
+    // Reference to the GridSensorComponent3D
     [SerializeField] private GridSensorComponent3D sensorComponent;
-    public List<string> importantTags = new List<string>(); // List of important tags set in the Inspector
+
+    // List of important tags to detect targets
+    public List<string> importantTags = new List<string>();
+
+    // Angle and distance settings for following targets
     public float targetFollowAngle = 45f;
     public float targetFollowDistance = 100f;
-    public float maxAllowedDistance = 65;
-    public Transform environmentCenter;
-    private List<GameObject> m_Targets = new List<GameObject>();
 
+    // Maximum allowed distance from the environment center
+    public float maxAllowedDistance = 65f;
+
+    // Reference to the environment center
+    public Transform environmentCenter;
+
+    // Reference to the TargetManager
+    private TargetManager targetManager;
+
+    // List of all agents in the scene
+    private List<JetAgent> allAgents = new List<JetAgent>();
+
+    // Current assigned target for this agent
+    private Transform assignedTarget;
+
+    // Maximum number of targets to consider in observations
+    private int maxTargets = 5;
+
+    /// <summary>
+    /// Initializes the agent by setting up references and initial positions.
+    /// </summary>
     public override void Initialize()
     {
+        // Ensure JetController is assigned
         jetController = GetComponent<JetController>();
+        if (jetController == null)
+        {
+            Debug.LogError("JetController component is missing from the Agent.");
+        }
+
+        // Ensure GridSensorComponent3D is assigned
+        if (sensorComponent == null)
+        {
+            sensorComponent = GetComponent<GridSensorComponent3D>();
+            if (sensorComponent == null)
+            {
+                Debug.LogError("GridSensorComponent3D is not assigned.");
+            }
+        }
+
+        // Find the TargetManager in the scene
+        targetManager = FindObjectOfType<TargetManager>();
+        if (targetManager == null)
+        {
+            Debug.LogError("TargetManager not found in the scene.");
+        }
+
+        // Gather all JetAgent instances in the scene
+        allAgents = new List<JetAgent>(FindObjectsOfType<JetAgent>());
+
+        // Assign target via TargetManager
+        targetManager.AssignTargetToAgent(this);
+
+        // Set initial position of the agent
         UpdatePosition();
     }
 
-    private List<JetAgent> FindAllAgents()
-    {
-        return new List<JetAgent>(FindObjectsOfType<JetAgent>());
-    }
-
+    /// <summary>
+    /// Called at the beginning of each episode to reset agent and targets.
+    /// </summary>
     public override void OnEpisodeBegin()
     {
+        // Reset agent's position
         UpdatePosition();
+
+        // Reset agent's velocity
         jetController.ResetVelocity();
+
+        // Reset all targets via TargetManager
+        targetManager.ResetAllTargets();
+
+        // Reassign target after resetting targets
+        targetManager.AssignTargetToAgent(this);
     }
 
+    /// <summary>
+    /// Updates the agent's position to a random location within the spawn range.
+    /// </summary>
     private void UpdatePosition()
     {
         transform.position = new Vector3(
-            Random.Range(environmentCenter.position.x - 10, environmentCenter.position.x + 10),
-            Random.Range(transform.position.y - 10, transform.position.y + 10),
-            Random.Range(transform.position.z - 10, transform.position.z + 10)
+            Random.Range(environmentCenter.position.x - 10f, environmentCenter.position.x + 10f),
+            Random.Range(environmentCenter.position.y, environmentCenter.position.y + 5f), // Suitable Y range
+            Random.Range(environmentCenter.position.z - 10f, environmentCenter.position.z + 10f)
         );
     }
 
+    /// <summary>
+    /// Collects observations from the environment and assigned target.
+    /// </summary>
+    /// <param name="sensor">The sensor to collect observations.</param>
     public override void CollectObservations(VectorSensor sensor)
     {
+        // Add agent's position and rotation to observations
         sensor.AddObservation(transform.position);
         sensor.AddObservation(transform.rotation);
         sensor.AddObservation(jetController.currentThrust);
 
+        // Collect observations related to the assigned target
         CollectTargetObservations(sensor);
+
+        // Collect observations related to other agents
         CollectAgentObservations(sensor);
     }
 
+    /// <summary>
+    /// Collects observations related to the assigned target.
+    /// </summary>
+    /// <param name="sensor">The sensor to collect observations.</param>
     private void CollectTargetObservations(VectorSensor sensor)
     {
-        Vector3 pos = transform.position;
-        Vector3 fwd = transform.forward;
-        m_Targets.Clear();
-
-        foreach (var target in sensorComponent.GetDetectedGameObjects(tag))
+        if (assignedTarget != null)
         {
-            Vector3 delta = target.transform.position - pos;
+            Vector3 delta = assignedTarget.position - transform.position;
+            Vector3 fwd = transform.forward;
+
             if (IsValidTarget(delta, fwd))
             {
-                m_Targets.Add(target);
                 sensor.AddObservation(delta);
-                sensor.AddObservation(target.transform.rotation);
+                sensor.AddObservation(assignedTarget.rotation);
             }
         }
     }
 
+    /// <summary>
+    /// Determines if a target is valid based on angle and distance constraints.
+    /// </summary>
+    /// <param name="delta">Vector from agent to target.</param>
+    /// <param name="fwd">Forward direction of the agent.</param>
+    /// <returns>True if target is valid, otherwise false.</returns>
     private bool IsValidTarget(Vector3 delta, Vector3 fwd)
     {
         return Vector3.Angle(fwd, delta) < targetFollowAngle &&
                delta.sqrMagnitude < targetFollowDistance * targetFollowDistance;
     }
 
+    /// <summary>
+    /// Collects observations related to other agents in the environment.
+    /// </summary>
+    /// <param name="sensor">The sensor to collect observations.</param>
     private void CollectAgentObservations(VectorSensor sensor)
     {
-        var agents = FindAllAgents();
-        foreach (var agent in agents)
+        foreach (var agent in allAgents)
         {
             if (agent != this)
             {
@@ -90,81 +177,128 @@ public class JetAgent : Agent
         }
     }
 
+    /// <summary>
+    /// Receives and processes actions from the agent's policy.
+    /// </summary>
+    /// <param name="actionBuffers">The action buffers containing actions.</param>
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        base.OnActionReceived(actionBuffers);
+        // Process discrete actions
         ProcessActions(actionBuffers.DiscreteActions);
+
+        // Check target statuses and apply rewards
         CheckTargets();
+
+        // Apply movement penalties to encourage efficient actions
         ApplyMovementPenalties(actionBuffers.DiscreteActions);
+
+        // Penalize and end episode if agent is too far from the environment center
         if (Vector3.Distance(transform.position, environmentCenter.position) > maxAllowedDistance)
         {
-            // Penalize and respawn or end episode
             AddReward(-1.0f);
             EndEpisode();
         }
     }
 
+    /// <summary>
+    /// Processes discrete actions received from the policy.
+    /// </summary>
+    /// <param name="actions">The discrete actions.</param>
     private void ProcessActions(ActionSegment<int> actions)
     {
-        float horizontal = actions[0] - 1;
-        float vertical = actions[1] - 1;
-        float thrustChange = actions[2] - 1;
+        // Convert discrete actions to control signals (-1, 0, 1)
+        float horizontal = actions[0] - 1f; // 0,1,2 => -1,0,1
+        float vertical = actions[1] - 1f;
+        float thrustChange = actions[2] ;
 
+        // Apply controls to the JetController
         jetController.Turn(horizontal, vertical);
         jetController.AdjustThrust(thrustChange);
     }
 
+    /// <summary>
+    /// Applies movement penalties based on the actions taken to encourage minimal necessary movements.
+    /// </summary>
+    /// <param name="actions">The discrete actions.</param>
     private void ApplyMovementPenalties(ActionSegment<int> actions)
     {
+        // Penalize for horizontal and vertical movements
         AddReward(-0.1f * Mathf.Abs(actions[0] - 1));
         AddReward(-0.1f * Mathf.Abs(actions[1] - 1));
     }
 
+    /// <summary>
+    /// Checks the status of the assigned target and assigns rewards or penalties accordingly.
+    /// </summary>
     private void CheckTargets()
     {
-        Vector3 pos = transform.position;
-        Vector3 vlc = jetController.CurrentVelocity;
-
-        foreach (var target in m_Targets)
+        if (assignedTarget != null)
         {
-            Vector3 delta = target.transform.position - pos;
+            Vector3 pos = transform.position;
+            Vector3 velocity = jetController.CurrentVelocity;
+            Vector3 delta = assignedTarget.position - pos;
             float distance = delta.magnitude;
-            float speedTowardsTarget = Vector3.Dot(delta.normalized, vlc);
+            float speedTowardsTarget = Vector3.Dot(delta.normalized, velocity);
+
             if (speedTowardsTarget > 0)
             {
-                float reward = speedTowardsTarget / distance;
+                float reward = Mathf.Clamp(speedTowardsTarget / distance, -1f, 1f);
                 AddReward(reward * 0.01f);
             }
+
             if (distance < 1.0f)
             {
-                AddReward(-1.0f);
-                Debug.LogWarning("ITSF");
+                AddReward(1.0f); // Reward for reaching the target
+                Debug.Log("Reward: Reached the target.");
                 EndEpisode();
             }
         }
     }
 
+    /// <summary>
+    /// Handles collision events with other agents and targets.
+    /// </summary>
+    /// <param name="collision">The collision information.</param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<JetAgent>() != null)
         {
             AddReward(-1.0f);
-            Debug.Log("Penalty for colliding with another agent.");
+            Debug.Log("Penalty: Collided with another agent.");
+            EndEpisode();
         }
-        if (collision.gameObject.tag == "Target")
+
+        if (collision.gameObject.CompareTag("Target"))
         {
-            Debug.Log("Penalty for colliding with another Target.");
             AddReward(1.0f);
+            Debug.Log("Reward: Collided with a Target.");
             EndEpisode();
         }
     }
 
+    /// <summary>
+    /// Defines the heuristic (manual control) for testing the agent.
+    /// </summary>
+    /// <param name="actionsOut">The action buffers to output actions.</param>
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[0] = Input.GetAxis("Horizontal");
-        continuousActionsOut[1] = Input.GetAxis("Vertical");
-        continuousActionsOut[2] = Input.GetAxis("Thrust");
-        Debug.Log("Heuristic - Horizontal: " + continuousActionsOut[0] + ", Vertical: " + continuousActionsOut[1] + ", Thrust: " + continuousActionsOut[2]);
+        // Manual control using discrete actions
+        var discreteActionsOut = actionsOut.DiscreteActions;
+
+        // Convert input axes to discrete actions (0, 1, 2)
+        discreteActionsOut[0] = Mathf.RoundToInt(Input.GetAxis("Horizontal") + 1f);
+        discreteActionsOut[1] = Mathf.RoundToInt(Input.GetAxis("Vertical") + 1f);
+        discreteActionsOut[2] = Mathf.RoundToInt(Input.GetAxis("Thrust") + 1f);
+
+        Debug.Log($"Heuristic Actions - Horizontal: {discreteActionsOut[0]}, Vertical: {discreteActionsOut[1]}, Thrust: {discreteActionsOut[2]}");
+    }
+
+    /// <summary>
+    /// Sets the assigned target for this agent.
+    /// </summary>
+    /// <param name="target">The target to assign.</param>
+    public void SetAssignedTarget(Transform target)
+    {
+        assignedTarget = target;
     }
 }
