@@ -23,3 +23,4 @@ behaviors:
     keep_checkpoints: 5            # Number of checkpoints to keep during training
     checkpoint_interval: 50000     # Frequency (in steps) to save checkpoints
     threaded: true                  # Whether to use multi-threading for training
+    

@@ -1,0 +1,29 @@
+{
+    "JetAgent": {
+        "checkpoints": [
+            {
+                "steps": 405632,
+                "file_path": "results\\First_Phase_03\\JetAgent\\JetAgent-405632.onnx",
+                "reward": -2.871222512851495,
+                "creation_time": 1726730766.3017604,
+                "auxillary_file_paths": [
+                    "results\\First_Phase_03\\JetAgent\\JetAgent-405632.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 405632,
+            "file_path": "results\\First_Phase_03\\JetAgent.onnx",
+            "reward": -2.871222512851495,
+            "creation_time": 1726730766.3017604,
+            "auxillary_file_paths": [
+                "results\\First_Phase_03\\JetAgent\\JetAgent-405632.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.12.0+cpu"
+    }
+}

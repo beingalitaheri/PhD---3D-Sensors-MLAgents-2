@@ -4,6 +4,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using MBaske.Sensors.Grid;
 using System.Collections.Generic;
+using MBaske.Driver;
 
 /// <summary>
 /// Represents a Jet Agent that uses ML-Agents for training and interacts with targets managed by TargetManager.
@@ -34,14 +35,13 @@ public class JetAgent : Agent
     private TargetManager targetManager;
 
     // List of all agents in the scene
-    private List<JetAgent> allAgents = new List<JetAgent>();
-
+    public List<JetAgent> allAgents = new List<JetAgent>();
+    public List<Obstacle_Cube> obstacle_Cubes = new List<Obstacle_Cube>();  
+    public List<Wall> walls = new List<Wall>();
     // Current assigned target for this agent
     private Transform assignedTarget;
 
     // Maximum number of targets to consider in observations
-    private int maxTargets = 5;
-
     /// <summary>
     /// Initializes the agent by setting up references and initial positions.
     /// </summary>
@@ -72,13 +72,13 @@ public class JetAgent : Agent
         }
 
         // Gather all JetAgent instances in the scene
-        allAgents = new List<JetAgent>(FindObjectsOfType<JetAgent>());
-
+        //allAgents = new List<JetAgent>(FindObjectsOfType<JetAgent>());
+        //
         // Assign target via TargetManager
-        targetManager.AssignTargetToAgent(this);
+        if (targetManager != null) { targetManager.AssignTargetToAgent(this); }
 
         // Set initial position of the agent
-        UpdatePosition();
+        //UpdatePosition();
     }
 
     /// <summary>
@@ -93,10 +93,10 @@ public class JetAgent : Agent
         jetController.ResetVelocity();
 
         // Reset all targets via TargetManager
-        targetManager.ResetAllTargets();
+        //targetManager.ResetAllTargets();
 
         // Reassign target after resetting targets
-        targetManager.AssignTargetToAgent(this);
+        if (targetManager != null) { targetManager.AssignTargetToAgent(this); }
     }
 
     /// <summary>
@@ -105,9 +105,9 @@ public class JetAgent : Agent
     private void UpdatePosition()
     {
         transform.position = new Vector3(
-            Random.Range(environmentCenter.position.x - 10f, environmentCenter.position.x + 10f),
-            Random.Range(environmentCenter.position.y, environmentCenter.position.y + 5f), // Suitable Y range
-            Random.Range(environmentCenter.position.z - 10f, environmentCenter.position.z + 10f)
+            Random.Range(environmentCenter.position.x - 4.5f, environmentCenter.position.x + 4.5f),
+            Random.Range(environmentCenter.position.y - 4.5f, environmentCenter.position.y + 4.5f),
+            Random.Range(environmentCenter.position.z - 4.5f, environmentCenter.position.z + 4.5f)
         );
     }
 
@@ -175,6 +175,26 @@ public class JetAgent : Agent
                 sensor.AddObservation(agent.transform.rotation);
             }
         }
+        foreach (var obstacle in obstacle_Cubes)
+        {
+            if (obstacle != this)
+            {
+                Vector3 delta = obstacle.transform.position - transform.position;
+                sensor.AddObservation(delta);
+                sensor.AddObservation(obstacle.transform.position);
+                sensor.AddObservation(obstacle.transform.rotation);
+            }
+        }
+        foreach (var wall in walls)
+        {
+            if (wall != this)
+            {
+                Vector3 delta = wall.transform.position - transform.position;
+                sensor.AddObservation(delta);
+                sensor.AddObservation(wall.transform.position);
+                sensor.AddObservation(wall.transform.rotation);
+            }
+        }
     }
 
     /// <summary>
@@ -195,7 +215,7 @@ public class JetAgent : Agent
         // Penalize and end episode if agent is too far from the environment center
         if (Vector3.Distance(transform.position, environmentCenter.position) > maxAllowedDistance)
         {
-            AddReward(-1.0f);
+            AddReward(-3.0f);
             EndEpisode();
         }
     }
@@ -265,6 +285,13 @@ public class JetAgent : Agent
         {
             AddReward(-1.0f);
             Debug.Log("Penalty: Collided with another agent.");
+            EndEpisode();
+        }
+
+        if (collision.gameObject.GetComponent<Wall>() != null)
+        {
+            AddReward(-1.0f);
+            Debug.Log("Penalty: Collided with a wall.");
             EndEpisode();
         }
 

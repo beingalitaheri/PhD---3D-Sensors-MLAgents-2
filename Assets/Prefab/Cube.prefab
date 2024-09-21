@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8777262934453779630}
   - component: {fileID: 3673726650979937388}
   - component: {fileID: 4617421574723817557}
+  - component: {fileID: 1421598862399697350}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Target
@@ -1116,3 +1117,15 @@ MonoBehaviour:
     m_Projection: 1
     m_PointCount: 296
     m_DrawGrid: 0.1
+--- !u!114 &1421598862399697350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951027420049346754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437c431d61493b04f8b0483fd88af62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
