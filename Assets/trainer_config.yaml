@@ -17,7 +17,7 @@ behaviors:
       extrinsic:
         gamma: 0.99              # Discount factor for future rewards
         strength: 1.0             # Strength of the extrinsic reward signal
-    max_steps: 500000             # Maximum number of steps per training run before stopping
+    max_steps: 3500000             # Maximum number of steps per training run before stopping
     time_horizon: 64               # Number of steps to consider for computing returns
     summary_freq: 10000            # Frequency (in steps) at which to record summaries
     keep_checkpoints: 5            # Number of checkpoints to keep during training

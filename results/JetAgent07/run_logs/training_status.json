@@ -1,0 +1,65 @@
+{
+    "JetAgent": {
+        "checkpoints": [
+            {
+                "steps": 1199991,
+                "file_path": "results\\JetAgent07\\JetAgent\\JetAgent-1199991.onnx",
+                "reward": 2.8586837853256024,
+                "creation_time": 1726996993.2209733,
+                "auxillary_file_paths": [
+                    "results\\JetAgent07\\JetAgent\\JetAgent-1199991.pt"
+                ]
+            },
+            {
+                "steps": 1249990,
+                "file_path": "results\\JetAgent07\\JetAgent\\JetAgent-1249990.onnx",
+                "reward": 2.831454115564173,
+                "creation_time": 1726997232.546123,
+                "auxillary_file_paths": [
+                    "results\\JetAgent07\\JetAgent\\JetAgent-1249990.pt"
+                ]
+            },
+            {
+                "steps": 1299944,
+                "file_path": "results\\JetAgent07\\JetAgent\\JetAgent-1299944.onnx",
+                "reward": 3.0883328872067586,
+                "creation_time": 1726997472.7959082,
+                "auxillary_file_paths": [
+                    "results\\JetAgent07\\JetAgent\\JetAgent-1299944.pt"
+                ]
+            },
+            {
+                "steps": 1349984,
+                "file_path": "results\\JetAgent07\\JetAgent\\JetAgent-1349984.onnx",
+                "reward": 6.763570478984287,
+                "creation_time": 1726997711.828565,
+                "auxillary_file_paths": [
+                    "results\\JetAgent07\\JetAgent\\JetAgent-1349984.pt"
+                ]
+            },
+            {
+                "steps": 1376329,
+                "file_path": "results\\JetAgent07\\JetAgent\\JetAgent-1376329.onnx",
+                "reward": 3.7419747908910117,
+                "creation_time": 1726997896.6705189,
+                "auxillary_file_paths": [
+                    "results\\JetAgent07\\JetAgent\\JetAgent-1376329.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1376329,
+            "file_path": "results\\JetAgent07\\JetAgent.onnx",
+            "reward": 3.7419747908910117,
+            "creation_time": 1726997896.6705189,
+            "auxillary_file_paths": [
+                "results\\JetAgent07\\JetAgent\\JetAgent-1376329.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.4.1+cpu"
+    }
+}

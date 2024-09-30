@@ -36,11 +36,13 @@ public class JetAgent : Agent
 
     // List of all agents in the scene
     public List<JetAgent> allAgents = new List<JetAgent>();
-    public List<Obstacle_Cube> obstacle_Cubes = new List<Obstacle_Cube>();  
+    public List<Obstacle_Cube> obstacle_Cubes = new List<Obstacle_Cube>();
+    public List<Target_Cube> target_Cubes = new List<Target_Cube>();
+    private IList<GameObject> m_Targets;
     public List<Wall> walls = new List<Wall>();
     // Current assigned target for this agent
     private Transform assignedTarget;
-
+    public string targetTag = "Target";
     // Maximum number of targets to consider in observations
     /// <summary>
     /// Initializes the agent by setting up references and initial positions.
@@ -70,7 +72,7 @@ public class JetAgent : Agent
         {
             Debug.LogError("TargetManager not found in the scene.");
         }
-
+        m_Targets = new List<GameObject>(27);
         // Gather all JetAgent instances in the scene
         //allAgents = new List<JetAgent>(FindObjectsOfType<JetAgent>());
         //
@@ -121,12 +123,24 @@ public class JetAgent : Agent
         sensor.AddObservation(transform.position);
         sensor.AddObservation(transform.rotation);
         sensor.AddObservation(jetController.currentThrust);
+        //
+        Vector3 pos = transform.position;
+        Vector3 fwd = transform.forward;
+
+        foreach (var target in sensorComponent.GetDetectedGameObjects(targetTag))
+        {
+            Vector3 delta = target.transform.position - pos;
+            if (Vector3.Angle(fwd, delta) < targetFollowAngle && delta.sqrMagnitude < targetFollowDistance) 
+            {
+                m_Targets.Add(target);
+            }
+        }
 
         // Collect observations related to the assigned target
-        CollectTargetObservations(sensor);
+        //CollectTargetObservations(sensor);
 
         // Collect observations related to other agents
-        CollectAgentObservations(sensor);
+        //CollectAgentObservations(sensor);
     }
 
     /// <summary>
@@ -175,14 +189,14 @@ public class JetAgent : Agent
                 sensor.AddObservation(agent.transform.rotation);
             }
         }
-        foreach (var obstacle in obstacle_Cubes)
+        foreach (var target in target_Cubes)
         {
-            if (obstacle != this)
+            if (target != this)
             {
-                Vector3 delta = obstacle.transform.position - transform.position;
+                Vector3 delta = target.transform.position - transform.position;
                 sensor.AddObservation(delta);
-                sensor.AddObservation(obstacle.transform.position);
-                sensor.AddObservation(obstacle.transform.rotation);
+                sensor.AddObservation(target.transform.position);
+                sensor.AddObservation(target.transform.rotation);
             }
         }
         foreach (var wall in walls)
@@ -269,7 +283,7 @@ public class JetAgent : Agent
             if (distance < 1.0f)
             {
                 AddReward(1.0f); // Reward for reaching the target
-                Debug.Log("Reward: Reached the target.");
+                Debug.LogWarning("Reward: Reached the target.");
                 EndEpisode();
             }
         }
@@ -284,21 +298,21 @@ public class JetAgent : Agent
         if (collision.gameObject.GetComponent<JetAgent>() != null)
         {
             AddReward(-1.0f);
-            Debug.Log("Penalty: Collided with another agent.");
+            Debug.LogWarning("Penalty: Collided with another agent.");
             EndEpisode();
         }
 
         if (collision.gameObject.GetComponent<Wall>() != null)
         {
             AddReward(-1.0f);
-            Debug.Log("Penalty: Collided with a wall.");
+            Debug.LogWarning("Penalty: Collided with a wall.");
             EndEpisode();
         }
 
-        if (collision.gameObject.CompareTag("Target"))
+        if (collision.gameObject.GetComponent<Target_Cube>() != null)
         {
             AddReward(1.0f);
-            Debug.Log("Reward: Collided with a Target.");
+            Debug.LogWarning("Reward: Collided with a Target.");
             EndEpisode();
         }
     }

@@ -1,6 +1,6 @@
 default_settings: null
 behaviors:
-  JetAgent2:
+  JetAgent:
     trainer_type: ppo
     hyperparameters:
       batch_size: 1024
@@ -16,7 +16,7 @@ behaviors:
       epsilon_schedule: linear
     network_settings:
       normalize: false
-      hidden_units: 128
+      hidden_units: 256
       num_layers: 2
       vis_encode_type: simple
       memory: null
@@ -36,11 +36,11 @@ behaviors:
           deterministic: false
     init_path: null
     keep_checkpoints: 5
-    checkpoint_interval: 500000
-    max_steps: 50000
+    checkpoint_interval: 50000
+    max_steps: 500000
     time_horizon: 64
     summary_freq: 10000
-    threaded: false
+    threaded: true
     self_play: null
     behavioral_cloning: null
 env_settings:

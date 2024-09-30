@@ -1,0 +1,38 @@
+{
+    "JetAgent": {
+        "checkpoints": [
+            {
+                "steps": 499996,
+                "file_path": "results\\JetAgent03\\JetAgent\\JetAgent-499996.onnx",
+                "reward": -2.025954199201278,
+                "creation_time": 1726966275.7942464,
+                "auxillary_file_paths": [
+                    "results\\JetAgent03\\JetAgent\\JetAgent-499996.pt"
+                ]
+            },
+            {
+                "steps": 500012,
+                "file_path": "results\\JetAgent03\\JetAgent\\JetAgent-500012.onnx",
+                "reward": -2.018181818904299,
+                "creation_time": 1726966276.0317626,
+                "auxillary_file_paths": [
+                    "results\\JetAgent03\\JetAgent\\JetAgent-500012.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500012,
+            "file_path": "results\\JetAgent03\\JetAgent.onnx",
+            "reward": -2.018181818904299,
+            "creation_time": 1726966276.0317626,
+            "auxillary_file_paths": [
+                "results\\JetAgent03\\JetAgent\\JetAgent-500012.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.4.1+cpu"
+    }
+}
