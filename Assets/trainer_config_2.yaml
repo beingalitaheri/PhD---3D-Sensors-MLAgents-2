@@ -1,5 +1,5 @@
 behaviors:
-  JetAgent2:
+  JetAgent_Child:
     trainer_type: ppo
     hyperparameters:
       batch_size: 1024
@@ -17,6 +17,6 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-    max_steps: 5.0e4
+    max_steps: 3500000
     time_horizon: 64
     summary_freq: 10000
