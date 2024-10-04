@@ -5,8 +5,7 @@ using Unity.MLAgents.Actuators;
 using MBaske.Sensors.Grid;
 using System.Collections.Generic;
 
-public class JetAgent_Child
-    : Agent
+public class JetAgent_Child: Agent
 {
     // Reference to the GridSensorComponent3D
     [SerializeField] private GridSensorComponent3D sensorComponent;
